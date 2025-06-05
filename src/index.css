@@ -1,0 +1,130 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Lato", Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+a {
+  outline: none;
+  border: none;
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  outline: none;
+  border: none;
+  cursor: pointer;
+  background: transparent;
+}
+
+input {
+  outline: none;
+  border: none;
+  background: none;
+  font-size: 15px;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.relative {
+  position: relative;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.grid {
+  display: grid;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.ai-center {
+  align-items: center;
+}
+
+.ai-end {
+  align-items: end;
+}
+
+.ai-start {
+  align-items: start;
+}
+
+.jc-center {
+  justify-content: center;
+}
+
+.jc-end {
+  justify-content: end;
+}
+
+.jc-start {
+  justify-content: start;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.react-tel-input .form-control {
+  width: 100% !important;
+  height: 55px !important;
+  font-family: "Lato", sans-serif !important;
+  font-size: 15px !important;
+}
+
+.react-calendar {
+  border: none !important;
+  width: 100%;
+  border-radius: 4px;
+}
+
+.react-calendar__tile--now {
+  background: #ce1f1f !important;
+  color: #fff;
+}
+
+.react-calendar__tile--now:enabled:hover,
+.react-calendar__tile--now:enabled:focus {
+  color: black;
+}
