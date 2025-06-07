@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const prod = !true;
+const prod = true;
 
 const API_URL = prod
   ? "https://lm-admin-be.vercel.app/"
