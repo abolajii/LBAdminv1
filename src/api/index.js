@@ -3,7 +3,7 @@ import axios from "axios";
 const prod = true;
 
 const API_URL = prod
-  ? "https://lm-admin-be.vercel.app/"
+  ? "https://lm-admin-be.vercel.app/api/admin"
   : "http://localhost:8002/api/admin";
 
 const LBAdminNoAuth = axios.create({
