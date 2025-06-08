@@ -12,6 +12,11 @@ const Inner = styled.div`
   padding: 24px 0;
   width: 500px;
   border-radius: 16px;
+
+  .error {
+    font-size: 14px;
+    color: red;
+  }
 `;
 
 const Header = styled.h2`
@@ -30,7 +35,7 @@ const Label = styled.div`
   color: ${colors.textColor};
   font-size: 14px;
   font-weight: 400;
-  line-height: 150%; /* 21px */
+  line-height: 150%;
   margin-bottom: 5px;
 `;
 
@@ -38,7 +43,7 @@ const Input = styled.input`
   width: 100%;
   height: 55px;
   border-radius: 15px;
-  border: 1px solid ${(props) => (props.error ? "red" : "#e8e6ea")}; // Add red border when error is true
+  border: 1px solid ${(props) => (props.error ? "red" : "#e8e6ea")};
   background: ${colors.white};
   padding: 0 15px;
 `;
@@ -60,7 +65,7 @@ const FormContainer = styled.div`
     color: rgba(0, 0, 0, 0.5);
     font-size: 15px;
     font-weight: 400;
-    line-height: 150%; /* 22.5px */
+    line-height: 150%;
   }
 `;
 
@@ -76,18 +81,25 @@ const Button = styled.button`
   text-align: center;
   font-size: 15px;
   font-weight: 500;
-  line-height: 150%; /* 31.814px */
+  line-height: 150%;
   flex: 1;
 `;
 
 const Create = styled(Button)`
   background: linear-gradient(180deg, #e83a3a 0%, #b50d0d 100%);
   color: ${colors.white};
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
 `;
 
 const CreateModal = ({ close, setRefresh }) => {
   const [clicked, setClicked] = React.useState(false);
   const [showModal, setShowModal] = React.useState(false);
+  const [generalError, setGeneralError] = React.useState("");
 
   const [userDetails, setUserDetails] = React.useState({
     phone: "",
@@ -105,10 +117,19 @@ const CreateModal = ({ close, setRefresh }) => {
     }));
   };
 
+  const handlePassword = (password) => {
+    setUserDetails((prevUserDetails) => ({
+      ...prevUserDetails,
+      password,
+    }));
+  };
+
   const handleCreateNewUser = async () => {
     setClicked(true);
-    if (!email || !phone) return;
-    if (!password) return;
+    setGeneralError("");
+
+    if (!email || !phone || !password) return;
+
     setShowModal(true);
 
     try {
@@ -116,17 +137,13 @@ const CreateModal = ({ close, setRefresh }) => {
       setRefresh(true);
       close();
     } catch (error) {
-      console.error(error);
+      setGeneralError(
+        error?.response?.data?.error ||
+          "Something went wrong. Please try again."
+      );
     } finally {
       setShowModal(false);
     }
-  };
-
-  const handlePassword = (password) => {
-    setUserDetails((prevUserDetails) => ({
-      ...prevUserDetails,
-      password,
-    }));
   };
 
   return (
@@ -141,6 +158,14 @@ const CreateModal = ({ close, setRefresh }) => {
             <MdClose size={23} />
           </button>
         </Header>
+        {generalError && (
+          <p
+            className="error"
+            style={{ textAlign: "center", marginTop: "15px" }}
+          >
+            {generalError}
+          </p>
+        )}
         <FormContainer>
           <div className="mb-2">
             <Label>Email address</Label>
@@ -153,9 +178,10 @@ const CreateModal = ({ close, setRefresh }) => {
               error={clicked && !email}
             />
             {clicked && !email && (
-              <p className="error">{"This field is required"}</p>
+              <p className="error">This field is required</p>
             )}
           </div>
+
           <div className="mb-2">
             <Label>Phone number</Label>
             <Input
@@ -167,30 +193,32 @@ const CreateModal = ({ close, setRefresh }) => {
               error={clicked && !phone}
             />
             {clicked && !phone && (
-              <p className="error">{"This field is required"}</p>
+              <p className="error">This field is required</p>
             )}
           </div>
+
           <div className="mb-2">
             <Label>Create password</Label>
-
             <PasswordInputWithGenerator
               error={clicked && !password}
               password={password}
               onChange={handlePassword}
             />
             {clicked && !password && (
-              <p className="error">{"This field is required"}</p>
+              <p className="error">This field is required</p>
             )}
           </div>
 
           <div className="note">
-            Login details with password will be sent to registered email for
+            Login details with password will be sent to the registered email for
             them to complete onboarding.
           </div>
         </FormContainer>
         <Footer className="flex">
           <Button onClick={close}>Cancel</Button>
-          <Create onClick={handleCreateNewUser}>Create account</Create>
+          <Create onClick={handleCreateNewUser} disabled={showModal}>
+            {showModal ? "Creating..." : "Create account"}
+          </Create>
         </Footer>
       </Inner>
     </Modal>
